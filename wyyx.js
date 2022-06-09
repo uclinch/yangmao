@@ -23,7 +23,7 @@ let hostname = "https://" + host;
 let ck_status = "";
 let CryptoJS = require("crypto-js");
 ///////////////////////////////////////////////////////////////////
-let VersionCheck = "0.0.1"
+let VersionCheck = "0.0.2"
 let Change = '签到!'
 let thank = `\n感谢 xx 的投稿`
 ///////////////////////////////////////////////////////////////////
@@ -77,6 +77,9 @@ async function start() {
 
 		console.log("\n开始 三餐水滴");
 		await scsd();
+
+		console.log("\n开始 浏览商品");
+		await llsp();
 
 		console.log("\n开始 浇水");
 		await js();
@@ -196,6 +199,32 @@ async function scsd() {
 		DoubleLog(`三餐水滴: 没有可以收取的 💧`);
 	} else {
 		DoubleLog(`三餐水滴: 失败 ❌ 了呢,原因未知!`);
+		console.log(result);
+	}
+}
+
+
+
+/**
+* 浏览商品    httpGet
+*/
+async function llsp() {
+	let Options = {
+		url: `${hostname}/orchard/task/finish.json?taskId=VISIT_ITEM&taskRecordId=0`,
+		headers: {
+			'Host': host,
+			'X-WX-3RD-Session': ck[0],
+			'Content-Type': 'application/json'
+		},
+	};
+	let result = await httpGet(Options, `浏览商品`);
+
+	if (result.result.result == 1) {
+		DoubleLog(`浏览商品: 收取 10 滴水💧`);
+	} else if (result.result.result == 2) {
+		DoubleLog(`浏览商品: 没有可以收取的 💧`);
+	} else {
+		DoubleLog(`浏览商品: 失败 ❌ 了呢,原因未知!`);
 		console.log(result);
 	}
 }
